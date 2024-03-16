@@ -1,9 +1,10 @@
 "use client"
 
+import { Header } from "@/components/header";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 
-export default function Home() {
+export default function LojistaPage() {
 
   const { user, handleSignOut } = useAuth();
   const router = useRouter()
@@ -11,17 +12,11 @@ export default function Home() {
   if(!user){
     router.push("/sign-in")
   }
-  /*
 
-  if(user?.name === "Motorista"){
+  if(user?.name !== "Televendas"){
     router.push("/motorista")
   }
 
-  if(user?.name === "Loja"){
-    router.push("/lojista")
-  }
-  */
-  
   function handleLogout(){
     router.push("/sign-in")
     handleSignOut()
@@ -29,6 +24,7 @@ export default function Home() {
 
   return (
     <>
+    <Header />
     <h1>{user?.name}</h1>
     <button onClick={handleLogout}>Deslogar</button>
     </>

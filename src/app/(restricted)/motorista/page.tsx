@@ -3,7 +3,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 
-export default function Home() {
+export default function MotoristaPage() {
 
   const { user, handleSignOut } = useAuth();
   const router = useRouter()
@@ -11,17 +11,11 @@ export default function Home() {
   if(!user){
     router.push("/sign-in")
   }
-  /*
 
-  if(user?.name === "Motorista"){
-    router.push("/motorista")
-  }
-
-  if(user?.name === "Loja"){
+  if(user?.name !== "Motorista"){
     router.push("/lojista")
   }
-  */
-  
+
   function handleLogout(){
     router.push("/sign-in")
     handleSignOut()
