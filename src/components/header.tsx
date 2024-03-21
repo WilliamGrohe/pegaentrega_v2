@@ -29,7 +29,7 @@ export function Header() {
   }
  
   return (
-    <header id="header" className='flex w-full top-0 left-0 fixed z-50 border-b-2 border-zinc-800 border-solid bg-zinc-200 py-0 px-1'>
+    <header id="header" className='flex w-full top-0 left-0 sticky z-50 border-b-2 border-zinc-800 border-solid bg-zinc-200 py-0 px-1'>
       <nav id="menu" className="h-16 px-4 flex w-full justify-between items-center">
         <a className="font-bold text-2xl text-zinc-950" href="#home">pega<span className='text-emerald-600'>entrega</span>.</a>
         

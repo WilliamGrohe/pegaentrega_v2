@@ -1,4 +1,6 @@
 import { initializeApp } from "firebase/app";
+import "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 
 // import 'firebase/auth';
 // import 'firebase/database';
@@ -16,6 +18,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-console.log(process.env.NEXT_PUBLIC_API_KEY)
+const dbFirestore = getFirestore(app)
 
-export { app };
+export { app, dbFirestore };
