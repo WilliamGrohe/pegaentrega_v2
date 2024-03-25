@@ -6,7 +6,6 @@ import React, { useContext, useEffect, useState } from "react";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { geocodeByAddress, getLatLng } from "react-google-places-autocomplete";
 
-import { useDeliveries } from "@/hooks/useDeliveries";
 import { DeliveriesContext } from "@/contexts/DeliveriesContext";
 
 interface LatLng {
@@ -83,7 +82,6 @@ export function Map() {
     getSelectionLatLng();
   }, [adressAutocomplete]);
 
-  console.log(resultAdress);
   return (
     <>
       <div className="h-96 w-5/12" ref={mapRef} />

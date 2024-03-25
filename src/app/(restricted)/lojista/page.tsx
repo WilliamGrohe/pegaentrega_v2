@@ -14,6 +14,8 @@ import {
 } from "react";
 import { Map } from "@/components/map";
 import { DeliveriesContext } from "@/contexts/DeliveriesContext";
+import { format, parseISO } from "date-fns";
+import {ptBR} from 'date-fns/locale/pt-BR';
 
 interface NewDeliveryDataProps {
   name: string | undefined;
@@ -27,7 +29,10 @@ export default function LojistaPage() {
     useState<NewDeliveryDataProps>();
   const router = useRouter();
 
-  const { setDeliveryInfos } = useContext(DeliveriesContext)
+  const { setDeliveryInfos } = useContext(DeliveriesContext);
+
+  const [selectDate, setSelectDate] = useState('');
+  const [selectDeliveryBy, setSelectDeliveryBy] = useState("");
 
   if (!user) {
     router.push("/sign-in");
@@ -42,13 +47,21 @@ export default function LojistaPage() {
     handleSignOut();
   }
 
+  const formattedDate = selectDate
+    ? format(parseISO(selectDate), "dd-MM-yyyy")
+    : "";
+
   function handleCreateDelivery(event: FormEvent) {
     event.preventDefault();
-    console.log(newDeliveryData?.name)
 
-    if (!newDeliveryData?.name ) {
-      alert('Preencher nome da entrega!')
-      return
+    if (!newDeliveryData?.name) {
+      alert("Preencher nome da entrega!");
+      return;
+    }
+
+    if (!selectDeliveryBy) {
+      alert("Selecione quem deverá fazer a entrega!");
+      return;
     }
 
     setDeliveryInfos({
@@ -56,8 +69,10 @@ export default function LojistaPage() {
       volumes: newDeliveryData.volumes,
       obs: newDeliveryData.obs,
       finished: false,
-      inRoad: false
-    })
+      inRoad: false,
+      date: formattedDate,
+      deliveryBy: selectDeliveryBy,
+    });
   }
 
   return (
@@ -66,7 +81,6 @@ export default function LojistaPage() {
       <main className="mt-4 p-4">
         <div className="flex gap-4 justify-between flex-wrap">
           <div className="">
-            
             <form
               id="formulario"
               className="flex flex-col gap-4 text-zinc-900"
@@ -115,18 +129,40 @@ export default function LojistaPage() {
                 type="date"
                 name="date"
                 id="date"
-                className="placeholder:italic placeholder:text-slate-400 border border-slate-300 rounded-md py-2 px-2 shadow-sm focus:outline-none focus:border-emerald-500 focus:ring-emerald-500 focus:ring-1 sm:text-sm"
+                required
+                value={selectDate}
+                onChange={(e) => setSelectDate(e.target.value)}
+                className="placeholder:italic cursor-pointer placeholder:text-slate-400 border border-slate-300 rounded-md py-2 px-2 shadow-sm focus:outline-none focus:border-emerald-500 focus:ring-emerald-500 focus:ring-1 sm:text-sm"
                 // onChange={(event) => setNewDeliveryDate(event.target.value)}
               />
-              <label htmlFor="">
-              <input type="radio" name="deliveryByWho" id="deliveryByWho" value="motoboy"/> 
-                Motoboy
-              </label>
-              <label htmlFor="">
-              <input type="radio" name="deliveryByWho" id="deliveryByWho" value="motorista"/> 
+              <label htmlFor="" className="text-zinc-100 font-medium">
+                <input
+                  type="radio"
+                  name="deliveryByWho"
+                  id="deliveryByWho"
+                  value="motorista"
+                  onChange={(e) => setSelectDeliveryBy(e.target.value)}
+                  className="cursor-pointer mr-2"
+                />
                 Motorista
               </label>
-              <button type="submit" className="bg-emerald-800 px-6 py-3 rounded-md hover:bg-emerald-900 cursor-pointer text-zinc-100">Salvar</button>
+              <label htmlFor="" className="text-zinc-100 font-medium">
+                <input
+                  type="radio"
+                  name="deliveryByWho"
+                  id="deliveryByWho"
+                  value="motoboy"
+                  onChange={(e) => setSelectDeliveryBy(e.target.value)}
+                  className="cursor-pointer mr-2"
+                />
+                Motoboy
+              </label>
+              <button
+                type="submit"
+                className="bg-emerald-800 px-6 py-3 rounded-md hover:bg-emerald-900 cursor-pointer text-zinc-100"
+              >
+                Salvar
+              </button>
             </form>
           </div>
           <div className="flex flex-1 justify-center flex-col">
@@ -137,6 +173,8 @@ export default function LojistaPage() {
           <p>Nome: {newDeliveryData?.name}</p>
           <p>Volumes: {newDeliveryData?.volumes}</p>
           <p>Observação: {newDeliveryData?.obs}</p>
+          <p>Data: {formattedDate}</p>
+          <p>Entregue por: {selectDeliveryBy}</p>
         </div>
       </main>
       <footer className="flex gap-10 justify-center bottom-0">
