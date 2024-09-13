@@ -1,9 +1,9 @@
 "use client";
 
-import { Loader } from "@googlemaps/js-api-loader";
 import React, { useContext, useEffect, useState } from "react";
 
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
+import { Loader } from "@googlemaps/js-api-loader";
 import { geocodeByAddress, getLatLng } from "react-google-places-autocomplete";
 
 import { DeliveriesContext } from "@/contexts/DeliveriesContext";
@@ -15,7 +15,7 @@ interface LatLng {
 
 export function Map() {
   const mapRef = React.useRef<HTMLDivElement>(null);
-  const { setLatLngOnContext } = useContext(DeliveriesContext)
+  const { setLatLngOnContext } = useContext(DeliveriesContext);
 
   const [adressAutocomplete, setAdressAutocomplete] = useState("");
   const [coordsAutocomplete, setCoordsAutocomplete] = useState<LatLng>();
@@ -35,7 +35,10 @@ export function Map() {
       //   "marker"
       // ) as google.maps.MarkerLibrary;
 
-      const { Marker, AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
+      const { Marker, AdvancedMarkerElement } =
+        (await google.maps.importLibrary(
+          "marker"
+        )) as google.maps.MarkerLibrary;
 
       const initialLocal = {
         //Caxias do Sul- RS
@@ -63,7 +66,7 @@ export function Map() {
         map: map,
         position: coordsAutocomplete,
         title: "Destino",
-        icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
+        icon: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
       });
     };
 
@@ -76,9 +79,10 @@ export function Map() {
       const latlng = await getLatLng(results[0]);
       console.log(latlng.lat, latlng.lng);
       setLatLngOnContext(latlng.lat, latlng.lng, resultAdress);
-      setCoordsAutocomplete({lat: latlng.lat, lng: latlng.lng});
+      setCoordsAutocomplete({ lat: latlng.lat, lng: latlng.lng });
     }
 
+    // setInterval(() => getSelectionLatLng(), 1000);
     getSelectionLatLng();
   }, [adressAutocomplete]);
 
@@ -94,16 +98,16 @@ export function Map() {
           styles: {
             input: (provided) => ({
               ...provided,
-              color: 'black',
+              color: "black",
             }),
             option: (provided) => ({
               ...provided,
-              color: 'black',
+              color: "black",
             }),
             singleValue: (provided) => ({
               ...provided,
-              color: 'black',
-              fontWeight: 'bold',
+              color: "black",
+              fontWeight: "bold",
             }),
           },
         }}

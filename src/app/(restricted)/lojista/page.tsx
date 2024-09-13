@@ -1,21 +1,19 @@
 "use client";
 
-import { GoogleMaps } from "@/utils/googleMaps";
 import { Header } from "@/components/header";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import {
-  DOMAttributes,
   FormEvent,
-  FormEventHandler,
-  MouseEventHandler,
   useContext,
   useState,
 } from "react";
 import { Map } from "@/components/map";
 import { DeliveriesContext } from "@/contexts/DeliveriesContext";
 import { format, parseISO } from "date-fns";
-import {ptBR} from 'date-fns/locale/pt-BR';
+import { DeliveryList } from "@/components/deliveryList";
+
+import { getAuth, updateProfile } from "firebase/auth";
 
 interface NewDeliveryDataProps {
   name: string | undefined;
@@ -32,10 +30,10 @@ export default function LojistaPage() {
   const { setDeliveryInfos } = useContext(DeliveriesContext);
 
   const [selectDate, setSelectDate] = useState('');
-  const [selectDeliveryBy, setSelectDeliveryBy] = useState("");
 
   if (!user) {
-    router.push("/sign-in");
+    // router.push("/sign-in");
+    router.replace("/sign-in");
   }
 
   // if (user?.name !== "Televendas") {
@@ -74,6 +72,11 @@ export default function LojistaPage() {
       deliveryBy: selectDeliveryBy,
     });
   }
+
+  const auth = getAuth();
+
+  console.log(auth.currentUser)
+
 
   return (
     <>
@@ -133,30 +136,7 @@ export default function LojistaPage() {
                 value={selectDate}
                 onChange={(e) => setSelectDate(e.target.value)}
                 className="placeholder:italic cursor-pointer placeholder:text-slate-400 border border-slate-300 rounded-md py-2 px-2 shadow-sm focus:outline-none focus:border-emerald-500 focus:ring-emerald-500 focus:ring-1 sm:text-sm"
-                // onChange={(event) => setNewDeliveryDate(event.target.value)}
               />
-              <label htmlFor="" className="text-zinc-100 font-medium">
-                <input
-                  type="radio"
-                  name="deliveryByWho"
-                  id="deliveryByWho"
-                  value="motorista"
-                  onChange={(e) => setSelectDeliveryBy(e.target.value)}
-                  className="cursor-pointer mr-2"
-                />
-                Motorista
-              </label>
-              <label htmlFor="" className="text-zinc-100 font-medium">
-                <input
-                  type="radio"
-                  name="deliveryByWho"
-                  id="deliveryByWho"
-                  value="motoboy"
-                  onChange={(e) => setSelectDeliveryBy(e.target.value)}
-                  className="cursor-pointer mr-2"
-                />
-                Motoboy
-              </label>
               <button
                 type="submit"
                 className="bg-emerald-800 px-6 py-3 rounded-md hover:bg-emerald-900 cursor-pointer text-zinc-100"
@@ -174,7 +154,9 @@ export default function LojistaPage() {
           <p>Volumes: {newDeliveryData?.volumes}</p>
           <p>Observação: {newDeliveryData?.obs}</p>
           <p>Data: {formattedDate}</p>
-          <p>Entregue por: {selectDeliveryBy}</p>
+        </div>
+        <div>
+          <DeliveryList />
         </div>
       </main>
       <footer className="flex gap-10 justify-center bottom-0">

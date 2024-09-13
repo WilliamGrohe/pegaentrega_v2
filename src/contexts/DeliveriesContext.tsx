@@ -19,7 +19,6 @@ type DeliveryInfo = {
   date?: string;
   finished?: boolean;
   inRoad?: boolean;
-  deliveryBy: string;
 };
 
 type CoordinatesType = {
@@ -86,7 +85,6 @@ const saveDeliveryOnDatabase = async () => {
       finished: deliveryInfos?.finished,
       obs: deliveryInfos?.obs,
       date: deliveryInfos?.date,
-      deliveryBy: deliveryInfos?.deliveryBy,
     });
     console.log("Document written with ID: ", docRef.id);
     setDeliveryId(docRef.id);

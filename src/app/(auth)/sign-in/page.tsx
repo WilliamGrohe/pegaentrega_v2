@@ -27,7 +27,7 @@ export default function SignIn() {
       alert("motorista entrada automatica");
     }
 
-    if (user?.name === "Televendas") {
+    if (user?.email === "loja@livrariarossi.com.br") {
       router.push("/lojista")
     }
   }
@@ -51,7 +51,7 @@ export default function SignIn() {
         alert("Motorista login");
       }
 
-      if (user?.name === "Televendas") {
+      if (user?.email === "loja@livrariarossi.com.br") {
         alert("televendas login");
         router.push("/lojista");
       }
